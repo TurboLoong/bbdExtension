@@ -1,30 +1,42 @@
 {
-  "name": "CHANGE THIS : Extension boilerplate",
-  "version": "0.0.1",
-  "manifest_version": 2,
-  "description": "This extension was created with the awesome extensionizr.com",
-  "homepage_url": "http://extensionizr.com",
-  "icons": {
-    "16": "icons/icon16.png",
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
-  },
-  "default_locale": "en",
-  "background": {
-    "scripts": ["src/background.js"],
-    "persistent": true
-  },
-  "page_action": {
-    "default_icon": "icons/icon19.png",
-    "default_title": "page action demo",
-    "default_popup": ""
-  },
-  "permissions": ["cookies", "tabs", "http://it.bbdservice.com:8988/*"],
-  "content_scripts": [
-    {
-      "matches": ["http://it.bbdservice.com:8988/*"],
-      "js": ["src/inject.js"],
-      "run_at": "document_end"
-    }
-  ]
+    "name": "CHANGE THIS : Extension boilerplate",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "This extension was created with the awesome extensionizr.com",
+    "homepage_url": "http://extensionizr.com",
+    "icons": {
+        "16": "icons/icon16.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "src/background.js"
+        ],
+        "persistent": true
+    },
+    "page_action": {
+        "default_icon": "icons/icon19.png",
+        "default_title": "page action demo",
+        "default_popup": "src/popup/popup.html"
+    },
+    "permissions": [
+        "cookies",
+        "tabs",
+        "storage",
+        "webRequest",
+        "http://it.bbdservice.com:8988/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "http://it.bbdservice.com:8988/*"
+            ],
+            "js": [
+                "src/inject.js"
+            ],
+            "run_at": "document_end"
+        }
+    ]
 }
