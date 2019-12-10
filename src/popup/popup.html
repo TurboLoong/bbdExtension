@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>popup页</title>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-</head>
+    <link rel="stylesheet" href="../lib/select/combo.select.css" />
+    <style type="text/css">
+      #linkItemMsgSelect {
+        width: 150px;
+      }
+      .dowebok {
+        width: 280px;
+      }
+    </style>
+  </head>
 
-<body>
-    <select id='linkItemMsgSelect'>
-
-    </select>
+  <body>
+    <div class="dowebok">
+      <select id="linidkItemMsgSelect"> </select>
+    </div>
+    <button id="submitBtn">提交</button>
+    <script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
+    <script
+      type="text/javascript"
+      src="../lib/select/jquery.combo.select.js"
+    ></script>
     <script type="text/javascript" src="./popup.js"></script>
-</body>
-
+  </body>
 </html>
