@@ -15,7 +15,7 @@
     "persistent": true
   },
   "page_action": {
-    "default_icon": "icons/icon19.png",
+    "default_icon": "icons/BBD-logo.png",
     "default_title": "page action demo",
     "default_popup": "src/popup/popup.html"
   },

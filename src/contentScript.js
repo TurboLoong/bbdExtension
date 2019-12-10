@@ -39,14 +39,18 @@ async function sendLog() {
     const defaultValue = {
       childrenDate: '', // 日志日期 '2019-12-8'
       childrenRemark: '修改bug',
+      parentTime: '09:33:57',
       workTypeId: 940852075975733252, // 任务归属
       itemMsgId: itemMsgId || 1125328115096215553, // 项目名称
       taskTypeId: 940857794565275656, //  任务类型
       childrenDateNum: 8, // 工作时长
+      // childrenStatus: 1, // ?
+      // logTableChildrenId: 1204212622860529666, // ?
+      // fillOver: 1, // ?
       childrenNode: '修改bug' // 任务进展描述
     };
 
-    Array.apply(null, Array(5)).forEach((value, index) => {
+    Array.apply(null, Array(1)).forEach((value, index) => {
       const someDate = new Date();
       someDate.setDate(curr.getDate() - index);
       lastFiveDaysData.push({
@@ -55,19 +59,21 @@ async function sendLog() {
       });
     });
 
-    const formData = new FormData();
+    let childrenList = [];
     lastFiveDaysData.forEach((value, index) => {
-      for (const key in value) {
-        formData.append('childrenList[' + index + '].' + key, value[key]);
-      }
+      childrenList.push(value);
     });
-
-    //   const res = await fetch(partUrl + '/logTable/saveLogTable.html', {
-    //     method: 'POST',
-    //     body: formData
-    //   }).then(response => response.json());
-
-    console.log(formData);
+    fetch(partUrl + '/logTable/saveLogTable.html', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+      },
+      body: formatParam(childrenList)
+    })
+      .then(response => response.json())
+      .then(res => {
+        console.log(res);
+      });
   }
 }
 
@@ -85,4 +91,20 @@ function getLinkItemMsg() {
 }
 function getDate(date) {
   return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+}
+function formatParam(params) {
+  const searchParams = params
+    .map((value, index) => {
+      return Object.keys(value)
+        .map(key => {
+          return (
+            encodeURIComponent(`childrenList[${index}].${key}`) +
+            '=' +
+            encodeURIComponent(value[key])
+          );
+        })
+        .join('&');
+    })
+    .join('&');
+  return searchParams;
 }
