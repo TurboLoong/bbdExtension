@@ -1,6 +1,6 @@
 const partUrl = 'http://it.bbdservice.com:8988/man-hour/admin';
-chrome.extension.sendMessage({}, function(response) {
-  var readyStateCheckInterval = setInterval(function() {
+chrome.extension.sendMessage({}, function (response) {
+  var readyStateCheckInterval = setInterval(function () {
     if (document.readyState === 'complete') {
       clearInterval(readyStateCheckInterval);
       const addNewIndexLink = document.querySelector(
@@ -8,22 +8,22 @@ chrome.extension.sendMessage({}, function(response) {
       );
       addNewIndexLink.click();
       const iframe = document.querySelector('iframe');
-      iframe.onload = function() {
-        const iframeDoc = iframe.contentWindow.document;
+      iframe.onload = function () {
+        // const iframeDoc = iframe.contentWindow.document;
         // 点击新增
-        if (iframeDoc.title == '工时管理22222') {
-          const addBtn = iframeDoc.querySelector('.addBtn');
-          addBtn.click();
-        } else {
-          getLinkItemMsg();
-          // sendLog();
-        }
+        // if (iframeDoc.title == '工时管理22222') {
+        //   const addBtn = iframeDoc.querySelector('.addBtn');
+        //   addBtn.click();
+        // } else {
+        getLinkItemMsg();
+        // sendLog();
+        // }
       };
     }
   }, 10);
 });
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   if (request.message === 'start') {
     sendLog();
   }
@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 async function sendLog() {
   const curr = new Date();
   const lastFiveDaysData = [];
-  chrome.storage.local.get('defaultItemMsgId', function(result) {
+  chrome.storage.local.get('defaultItemMsgId', function (result) {
     httpPost(result.defaultItemMsgId);
   });
   function httpPost(itemMsgId) {
@@ -84,14 +84,16 @@ function getLinkItemMsg() {
   })
     .then(r => r.json())
     .then(response => {
-      chrome.storage.local.set({ linkItemMsg: response }, function() {
+      chrome.storage.local.set({ linkItemMsg: response }, function () {
         console.log('linkItemMsg Value is set to ');
       });
     });
 }
+
 function getDate(date) {
   return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
 }
+
 function formatParam(params) {
   const searchParams = params
     .map((value, index) => {

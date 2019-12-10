@@ -11,7 +11,9 @@
   },
   "default_locale": "en",
   "background": {
-    "scripts": ["src/background.js"],
+    "scripts": [
+      "src/background.js"
+    ],
     "persistent": true
   },
   "page_action": {
@@ -28,8 +30,12 @@
   ],
   "content_scripts": [
     {
-      "matches": ["http://it.bbdservice.com:8988/*"],
-      "js": ["src/lib/util.js", "src/contentScript.js"],
+      "matches": [
+        "http://it.bbdservice.com:8988/*"
+      ],
+      "js": [
+        "src/contentScript.js"
+      ],
       "run_at": "document_end"
     }
   ]
