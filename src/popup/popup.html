@@ -1,50 +1,66 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>popup页</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="../lib/select/combo.select.css" />
+    <link rel="stylesheet" href="../lib/bulma.min.css" />
+    <style type="text/css">
+      .content {
+        padding: 20px 20px 0;
+      }
 
-<head>
-  <title>popup页</title>
-  <meta charset="utf-8" />
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <link rel="stylesheet" href="../lib/select/combo.select.css" />
-  <link rel="stylesheet" href="../lib/bulma.min.css" />
-  <style type="text/css">
-    .content {
-      padding: 20px 20px 0;
-    }
+      #linkItemMsgSelect {
+        width: 150px;
+      }
 
-    #linkItemMsgSelect {
-      width: 150px;
-    }
+      .dowebok {
+        width: 280px;
+      }
 
-    .dowebok {
-      width: 280px;
-    }
+      .content ul {
+        margin-left: 0;
+      }
+    </style>
+  </head>
 
-    .content ul {
-      margin-left: 0;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="content">
-    <div class="field">
-      <label class="label">选择项目</label>
-      <div class="control">
-        <div class="dowebok">
-          <select id="linidkItemMsgSelect"> </select>
+  <body>
+    <div class="content">
+      <div class="field">
+        <label class="label">任务名称</label>
+        <div class="control">
+          <input id="childrenRemark" class="input" type="text" />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">选择项目</label>
+        <div class="control">
+          <div class="dowebok">
+            <select id="linidkItemMsgSelect"> </select>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">任务进展描述</label>
+        <div class="control">
+          <input id="childrenNode" class="input" type="text" />
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <div class="control">
+          <button id="submitTodayBtn" class="button is-link">提交当日</button>
+        </div>
+        <div class="control">
+          <button id="submitFiveBtn" class="button is-link">提交五天</button>
         </div>
       </div>
     </div>
-    <div class="field">
-      <div class="control">
-        <button id="submitBtn" class="button is-link">提交</button>
-      </div>
-    </div>
-  </div>
-  <script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="../lib/select/jquery.combo.select.js"></script>
-  <script type="text/javascript" src="./popup.js"></script>
-</body>
-
+    <script type="text/javascript" src="../lib/jquery-1.11.3.min.js"></script>
+    <script
+      type="text/javascript"
+      src="../lib/select/jquery.combo.select.js"
+    ></script>
+    <script type="text/javascript" src="./popup.js"></script>
+  </body>
 </html>
