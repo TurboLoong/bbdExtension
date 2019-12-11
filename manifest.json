@@ -1,36 +1,45 @@
 {
-  "name": "BBDUTlog",
-  "version": "0.0.1",
-  "manifest_version": 2,
-  "description": "bbd",
-  "homepage_url": "http://192.168.2.240:8080/main/fixed.jsp",
-  "icons": {
-    "16": "icons/BBD-logo.png",
-    "48": "icons/BBD-logo.png",
-    "128": "icons/BBD-logo.png"
-  },
-  "default_locale": "en",
-  "background": {
-    "scripts": ["src/background.js"],
-    "persistent": true
-  },
-  "page_action": {
-    "default_icon": "icons/BBD-logo.png",
-    "default_title": "page action demo",
-    "default_popup": "src/popup/popup.html"
-  },
-  "permissions": [
-    "notifications",
-    "tabs",
-    "storage",
-    "webRequest",
-    "http://it.bbdservice.com:8988/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["http://it.bbdservice.com:8988/*"],
-      "js": ["src/contentScript.js"],
-      "run_at": "document_end"
-    }
-  ]
+    "name": "BBDUTlog",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "bbd",
+    "homepage_url": "http://192.168.2.240:8080/main/fixed.jsp",
+    "icons": {
+        "16": "icons/BBD-logo.png",
+        "48": "icons/BBD-logo.png",
+        "128": "icons/BBD-logo.png"
+    },
+    "default_locale": "en",
+    "background": {
+        "scripts": [
+            "src/background.js"
+        ],
+        "persistent": true
+    },
+    "page_action": {
+        "default_icon": "icons/BBD-logo.png",
+        "default_title": "page action demo",
+        "default_popup": "src/popup/popup.html"
+    },
+    "permissions": [
+        "notifications",
+        "tabs",
+        "storage",
+        "webRequest",
+        "http://192.168.2.240:8080/",
+        "http://it.bbdservice.com:8988/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "http://192.168.2.240:8080/*",
+                "http://it.bbdservice.com:8988/*"
+            ],
+            "js": [
+                "src/lib/util.js",
+                "src/contentScript.js"
+            ],
+            "run_at": "document_end"
+        }
+    ]
 }
