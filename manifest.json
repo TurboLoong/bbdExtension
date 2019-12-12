@@ -23,7 +23,6 @@
     "notifications",
     "tabs",
     "storage",
-    "webRequest",
     "http://192.168.2.240:8080/",
     "http://it.bbdservice.com:8988/*"
   ],

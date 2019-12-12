@@ -3,9 +3,16 @@ document.addEventListener('DOMContentLoaded', function() {
   $('#submitTodayBtn').on('click', function(params) {
     sendMessage(1);
   });
-  $('#submitFiveBtn').on('click', function(params) {
-    sendMessage(5);
-  });
+  const weekDay = new Date().getDay();
+
+  if (weekDay == 5) {
+    $('#submitFiveBtn').on('click', function(params) {
+      const date = new Date();
+      sendMessage(5);
+    });
+  } else {
+    $('#submitFiveBtn').attr('disabled', true);
+  }
 });
 function sendMessage(params) {
   chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
