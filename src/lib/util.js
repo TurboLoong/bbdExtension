@@ -8,6 +8,14 @@ function getLinkItemMsg() {
       chrome.storage.local.set({ linkItemMsg: response }, function() {
         console.log('linkItemMsg Value is set to ');
       });
+    })
+    .catch(function() {
+      chrome.notifications.create(null, {
+        type: 'basic',
+        iconUrl: 'icons/info.png',
+        title: '状态',
+        message: '提一次使用请先登录UT，以后直接登录OA就可以提交'
+      });
     });
 }
 

@@ -14,14 +14,3 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     sendMessageToBackground({ type: 'send', data: 5 });
   }
 });
-
-function getLinkItemMsg() {
-  const date = new Date();
-  fetch(partUrl + `/itemMsg/getLinkItemMsg.html?parentDate=${getDate(date)}`)
-    .then(r => r.json())
-    .then(response => {
-      chrome.storage.local.set({ linkItemMsg: response }, function() {
-        console.log('linkItemMsg Value is set to ');
-      });
-    });
-}
