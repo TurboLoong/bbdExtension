@@ -8,9 +8,7 @@ chrome.extension.sendMessage({}, function(response) {
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  if (request.message === 'start' && request.date == 'today') {
-    sendMessageToBackground({ type: 'send', data: 1 });
-  } else {
-    sendMessageToBackground({ type: 'send', data: 5 });
+  if (request.message == 'send') {
+    sendMessageToBackground({ type: 'send', data: request.data });
   }
 });

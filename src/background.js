@@ -12,19 +12,12 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
 
 function sendLog(num) {
   const curr = new Date();
-  const lastFiveDaysData = [];
-  chrome.storage.local.get('defaultItemMsgId', function(itemResult) {
-    chrome.storage.local.get('childrenRemark', function(markResult) {
-      chrome.storage.local.get('childrenNode', function(nodeResult) {
-        httpPost(
-          itemResult.defaultItemMsgId,
-          markResult.childrenRemark,
-          nodeResult.childrenNode
-        );
-      });
-    });
+  chrome.storage.local.get('params', function(local) {
+    httpPost(local.params);
   });
-  function httpPost(itemMsgId, childrenRemark, childrenNode) {
+  function httpPost({ itemMsgId, childrenRemark, childrenNode }) {
+    const lastFiveDaysData = [];
+
     const defaultValue = {
       childrenDate: '', // 日志日期 '2019-12-8'
       childrenRemark: childrenRemark || '修改bug', //任务名称
@@ -35,14 +28,23 @@ function sendLog(num) {
       childrenDateNum: 8, // 工作时长
       childrenNode: childrenNode || '修改bug' // 任务进展描述
     };
-    Array.apply(null, Array(num || 1)).forEach((value, index) => {
-      const someDate = new Date();
-      someDate.setDate(curr.getDate() - index);
+    if (num == 1) {
       lastFiveDaysData.push({
         ...defaultValue,
-        childrenDate: getDate(someDate)
+        childrenDate: getDate(curr)
       });
-    });
+    } else {
+      // 获取当周的周一到周五的日期
+      Array.apply(null, Array(5)).forEach((value, index) => {
+        let someDate = new Date();
+        someDate.setDate(curr.getDate() - (curr.getDay() - (5 - index) - 1));
+        lastFiveDaysData.push({
+          ...defaultValue,
+          childrenDate: getDate(someDate)
+        });
+      });
+    }
+
     fetch(partUrl + '/logTable/saveLogTable.html', {
       method: 'POST',
       headers: {
