@@ -39,7 +39,7 @@ function sendLog(num) {
       // 获取当周的周一到周五的日期
       Array.apply(null, Array(5)).forEach((value, index) => {
         let someDate = new Date();
-        someDate.setDate(curr.getDate() - (curr.getDay() - (5 - index) - 1));
+        someDate.setDate(curr.getDate() - (curr.getDay() - (5 - index)));
         lastFiveDaysData.push({
           ...defaultValue,
           childrenDate: getDate(someDate)
