@@ -9,19 +9,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     {
       code: '(' + modifyDOM + ')();'
     },
-    results => {
+    async results => {
       const href = $(results[0])[0].href;
       var iframe = doc.createElement('iframe');
       iframe.style.display = 'none';
       iframe.src = href;
       doc.body.appendChild(iframe);
-       cookieinfo();
       const linkItemMsg = await getLinkItemMsg();
       const linkTaskType = await getTaskType();
       init(linkItemMsg, linkTaskType);
     }
   );
-  
 
   $('#submitTodayBtn').on('click', function() {
     const params = {
@@ -126,5 +124,3 @@ function getDate(date) {
     date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
   );
 }
-
-function cookieinfo() {}
