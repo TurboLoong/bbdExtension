@@ -9,15 +9,18 @@ document.addEventListener('DOMContentLoaded', async function() {
     {
       code: '(' + modifyDOM + ')();'
     },
-    async results => {
+    results => {
       const href = $(results[0])[0].href;
       var iframe = doc.createElement('iframe');
+      iframe.id = 'UTiframe';
       iframe.style.display = 'none';
       iframe.src = href;
       doc.body.appendChild(iframe);
-      const linkItemMsg = await getLinkItemMsg();
-      const linkTaskType = await getTaskType();
-      init(linkItemMsg, linkTaskType);
+      $('iframe#UTiframe').load(async function() {
+        const linkItemMsg = await getLinkItemMsg();
+        const linkTaskType = await getTaskType();
+        init(linkItemMsg, linkTaskType);
+      });
     }
   );
 
