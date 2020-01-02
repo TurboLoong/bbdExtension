@@ -1,0 +1,36 @@
+@charset "utf-8";
+.clearfix {
+  clear: both;
+}
+input[type="checkbox"] {
+  margin: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+input:focus {
+  outline: none;
+}
+#notFillItems {
+  color: brown;
+}
+#notFillItems .checkItem {
+  margin-right: 30px;
+  cursor: pointer;
+}
+.check_span {
+  display: inline-block;
+  border: 1px solid #000;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  margin-right: 5px;
+}
+.check_span:hover {
+  border-color: #35a48e;
+}
+.check_span--checked {
+  border-color: #fff;
+  background-image: url(checkbox.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}

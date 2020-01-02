@@ -12,14 +12,11 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
   sendResponse();
 });
 
-function sendLog(num) {
-  const curr = new Date();
+function sendLog(days) {
   chrome.storage.local.get('params', function(local) {
     httpPost(local.params);
   });
   function httpPost({ itemMsgId, childrenRemark, childrenNode, taskTypeId }) {
-    const lastFiveDaysData = [];
-
     const defaultValue = {
       childrenDate: '', // 日志日期 '2019-12-8'
       childrenRemark: childrenRemark || '修改bug', //任务名称
@@ -30,22 +27,14 @@ function sendLog(num) {
       childrenDateNum: 8, // 工作时长
       childrenNode: childrenNode || '修改bug' // 任务进展描述
     };
-    if (num == 1) {
-      lastFiveDaysData.push({
+
+    const params = [];
+    days.forEach((value, index) => {
+      params.push({
         ...defaultValue,
-        childrenDate: getDate(curr)
+        childrenDate: value
       });
-    } else {
-      // 获取当周的周一到周五的日期
-      Array.apply(null, Array(5)).forEach((value, index) => {
-        let someDate = new Date();
-        someDate.setDate(curr.getDate() - (curr.getDay() - (5 - index)));
-        lastFiveDaysData.push({
-          ...defaultValue,
-          childrenDate: getDate(someDate)
-        });
-      });
-    }
+    });
 
     fetch(partUrl + '/logTable/saveLogTable.html', {
       method: 'POST',
@@ -55,7 +44,7 @@ function sendLog(num) {
       host: 'it.bbdservice.com:8988',
       origin: 'http://it.bbdservice.com:8988',
       referer: 'http://it.bbdservice.com:8988/man-hour/admin/index.html',
-      body: formatParam(lastFiveDaysData)
+      body: formatParam(params)
     })
       .then(response => response.json())
       .then(res => {
@@ -90,11 +79,6 @@ function sendNotification(status, message) {
       message: message
     });
   }
-}
-function getDate(date) {
-  return (
-    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-  );
 }
 
 function formatParam(params) {

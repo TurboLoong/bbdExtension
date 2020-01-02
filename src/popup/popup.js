@@ -17,26 +17,19 @@ document.addEventListener('DOMContentLoaded', async function() {
       iframe.src = href;
       doc.body.appendChild(iframe);
       $('iframe#UTiframe').load(async function() {
+        const notFills = await getNotFill();
         const linkItemMsg = await getLinkItemMsg();
         const linkTaskType = await getTaskType();
-        init(linkItemMsg, linkTaskType);
+        init(notFills, linkItemMsg, linkTaskType);
       });
     }
   );
-
-  $('#submitTodayBtn').on('click', function() {
-    const params = {
-      childrenRemark: $('#childrenRemark').val(),
-      childrenNode: $('#childrenNode').val(),
-      itemMsgId: $('#itemMsgSelect').val(),
-      taskTypeId: $('#taskTypeSelect').val()
-    };
-    saveLocalData(params);
-    sendMessage(1);
-  });
-  const weekDay = new Date().getDay();
-  if ([5, 6, 7].includes(weekDay)) {
-    $('#submitFiveBtn').on('click', function() {
+  $('#submitBtn').on('click', function() {
+    let days = [];
+    $('input[name="checkboxItem"]:checked').each(function() {
+      days.push($(this).val());
+    });
+    if (days.length) {
       const params = {
         childrenRemark: $('#childrenRemark').val(),
         childrenNode: $('#childrenNode').val(),
@@ -44,24 +37,39 @@ document.addEventListener('DOMContentLoaded', async function() {
         taskTypeId: $('#taskTypeSelect').val()
       };
       saveLocalData(params);
-      sendMessage(weekDay);
-    });
-  } else {
-    $('#submitFiveBtn').attr('disabled', true);
-  }
+      sendMessage(days);
+    }
+  });
 });
 
-function sendMessage(day) {
+function sendMessage(days) {
   chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
     var activeTab = tabs[0];
     chrome.tabs.sendMessage(activeTab.id, {
       message: 'send',
-      data: day
+      data: days
     });
   });
 }
 
-function init(linkItemMsg, linkTaskType) {
+function init(notFills, linkItemMsg, linkTaskType) {
+  // 未填报日期
+  if (Array.isArray(notFills) && notFills.length) {
+    $('#notFillItems').html(
+      notFills.reduce(
+        (pre, curr) =>
+          pre +
+          `<span class="checkItem"><span class="check_span"><input type="checkbox" name="checkboxItem" value="${curr}"></span>${curr}</span>`,
+        '<div class="checkItem"><span class="check_span"><input type="checkbox" id="checkAll"></span> 全选</div>'
+      )
+    );
+  } else {
+    $('#notFillItems').text('没有日志可填写');
+  }
+  $('#notFillItems').selectCheck({
+    allId: 'checkAll',
+    parentSelect: '.checkItem'
+  });
   chrome.storage.local.get('params', function(local) {
     const params = local.params || {
       itemMsgId: null,
@@ -104,6 +112,12 @@ function init(linkItemMsg, linkTaskType) {
 }
 const partUrl = 'http://it.bbdservice.com:8988/man-hour/admin';
 
+function getNotFill() {
+  return fetch(
+    partUrl + '/tableShow/getNotFill.html?_=' + new Date().getTime()
+  ).then(res => res.json());
+}
+
 function getLinkItemMsg() {
   const date = new Date();
   return fetch(
@@ -124,6 +138,14 @@ function saveLocalData(params) {
 
 function getDate(date) {
   return (
-    date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+    date.getFullYear() +
+    '-' +
+    isLessThanTen(date.getMonth() + 1) +
+    '-' +
+    isLessThanTen(date.getDate())
   );
+}
+
+function isLessThanTen(num) {
+  return num < 10 ? '0' + num : num;
 }
