@@ -42,13 +42,50 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 });
 
+chrome.runtime.onMessage.addListener(async function(
+  request,
+  sender,
+  sendResponse
+) {
+  if (request.type == 'msg') {
+    const message = {
+      success: '<span class="has-text-success">提交日志成功</span>',
+      fail: '<span class="has-text-warning">提交日志失败</span>'
+    };
+    $('#backMessage').html(message[request.data]);
+    const notFills = await getNotFill();
+    if (Array.isArray(notFills) && notFills.length) {
+      $('#notFillItems').html(
+        notFills.reduce(
+          (pre, curr) =>
+            pre +
+            `<span class="checkItem"><span class="check_span"><input type="checkbox" name="checkboxItem" value="${curr}"></span>${curr}</span>`,
+          '<div class="checkItem"><span class="check_span"><input type="checkbox" id="checkAll"></span> 全选</div>'
+        )
+      );
+    } else {
+      $('#notFillItems').text('没有日志可填写');
+    }
+    $('#notFillItems').selectCheck({
+      allId: 'checkAll',
+      parentSelect: '.checkItem'
+    });
+  }
+});
+
 function sendMessage(days) {
   chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
     var activeTab = tabs[0];
-    chrome.tabs.sendMessage(activeTab.id, {
-      message: 'send',
-      data: days
-    });
+    chrome.tabs.sendMessage(
+      activeTab.id,
+      {
+        message: 'send',
+        data: days
+      },
+      function(res) {
+        console.log(res);
+      }
+    );
   });
 }
 

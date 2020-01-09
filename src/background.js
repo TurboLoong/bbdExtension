@@ -1,15 +1,41 @@
 const partUrl = 'http://it.bbdservice.com:8988/man-hour/admin';
-
 chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
   if (sender.tab.url == 'http://192.168.2.240:8080/main/fixed.jsp') {
     chrome.pageAction.show(sender.tab.id);
-  }
-  if (request.message) {
+  } else if (request.message) {
     if (request.message.type == 'send') {
       sendLog(request.message.data);
+    } else if (request.message.type == 'download') {
+      let currId = '';
+      chrome.downloads.download(
+        {
+          url:
+            'http://upload.wikimedia.org/wikipedia/commons/6/6e/Moonbeam_UFO.JPG',
+          filename: 'code.jpeg',
+          conflictAction: 'overwrite',
+          saveAs: false
+        },
+        function(downloadId) {
+          currId = downloadId;
+        }
+      );
+      chrome.downloads.onChanged.addListener(function(item) {
+        if (
+          item.id === currId &&
+          item.state &&
+          item.state.current == 'complete'
+        ) {
+          console.log(item.id);
+        }
+      });
     }
   }
-  sendResponse();
+  // else if (sender.tab.url.includes('it.bbdservice.com:9898')) {
+
+  //   chrome.tabs.executeScript(null, {
+  //     code: '(' + parseCode() + ')()'
+  //   });
+  // }
 });
 
 function sendLog(days) {
@@ -35,7 +61,6 @@ function sendLog(days) {
         childrenDate: value
       });
     });
-
     fetch(partUrl + '/logTable/saveLogTable.html', {
       method: 'POST',
       headers: {
@@ -57,28 +82,10 @@ function sendLog(days) {
 }
 
 function sendNotification(status, message) {
-  if (status == 'success') {
-    chrome.notifications.create(null, {
-      type: 'basic',
-      iconUrl: 'icons/success.png',
-      title: '状态',
-      message: '提交日志成功'
-    });
-  } else if (status == 'fail') {
-    chrome.notifications.create(null, {
-      type: 'basic',
-      iconUrl: 'icons/fail.png',
-      title: '状态',
-      message: '提交日志失败'
-    });
-  } else if (status == 'info') {
-    chrome.notifications.create(null, {
-      type: 'basic',
-      iconUrl: 'icons/info.png',
-      title: '状态',
-      message: message
-    });
-  }
+  chrome.runtime.sendMessage({
+    type: 'msg',
+    data: status
+  });
 }
 
 function formatParam(params) {
