@@ -5,37 +5,8 @@ chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
   } else if (request.message) {
     if (request.message.type == 'send') {
       sendLog(request.message.data);
-    } else if (request.message.type == 'download') {
-      let currId = '';
-      chrome.downloads.download(
-        {
-          url:
-            'http://upload.wikimedia.org/wikipedia/commons/6/6e/Moonbeam_UFO.JPG',
-          filename: 'code.jpeg',
-          conflictAction: 'overwrite',
-          saveAs: false
-        },
-        function(downloadId) {
-          currId = downloadId;
-        }
-      );
-      chrome.downloads.onChanged.addListener(function(item) {
-        if (
-          item.id === currId &&
-          item.state &&
-          item.state.current == 'complete'
-        ) {
-          console.log(item.id);
-        }
-      });
     }
   }
-  // else if (sender.tab.url.includes('it.bbdservice.com:9898')) {
-
-  //   chrome.tabs.executeScript(null, {
-  //     code: '(' + parseCode() + ')()'
-  //   });
-  // }
 });
 
 function sendLog(days) {

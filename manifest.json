@@ -28,15 +28,13 @@
     "activeTab",
     "downloads",
     "http://192.168.2.240:8080/*",
-    "http://it.bbdservice.com:8988/*",
-    "http://it.bbdservice.com:9898/*"
+    "http://it.bbdservice.com:8988/*"
   ],
   "content_scripts": [
     {
       "matches": [
         "http://192.168.2.240:8080/*",
-        "http://it.bbdservice.com:8988/*",
-        "http://it.bbdservice.com:9898/*"
+        "http://it.bbdservice.com:8988/*"
       ],
       "js": ["src/contentScript.js"],
       "run_at": "document_end"
